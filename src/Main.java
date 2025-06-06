@@ -1,9 +1,15 @@
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         // todo: 1.	Фильтрация и сборка:
         //          Создайте список объектов Person с полями name, age и gender.
@@ -156,6 +162,38 @@ public class Main {
         //          Прочитайте содержимое текстового файла в список строк.
         //          Используя Stream, отфильтруйте только те строки, которые содержат определенное слово.
         //          Подсчитайте количество строк, соответствующих условию.
+
+        System.out.println("Task five:");
+        // Создаем папку (сначала указываем путь и имя, затем создаем)
+        try {
+            Path folder = Paths.get("D:/Miscellaneous/TestsAndFiles");
+            Files.createDirectory(folder);
+            System.out.println("A folder is created");
+        } catch (FileAlreadyExistsException e) {
+            System.out.println("There is such a folder, address: " + e.getMessage());
+        }
+
+        // Создаем файл (сначала указываем путь и имя, затем создаем)
+        Path path = Paths.get("D:/Miscellaneous/TestsAndFiles/textTask5Streams.txt");
+        try {
+            Files.createFile(path);
+            System.out.println("A file is created");
+        } catch (FileAlreadyExistsException e) {
+            System.out.println("There is such a file, address: " + e.getMessage());
+        }
+
+/*        // Так можно прочитать сразу из файла
+        Files.lines(path).forEach(System.out::println);*/
+
+        // Записываем информацию из файла в список
+        List<String> lines = Files.readAllLines(path);
+//        lines.forEach(System.out::println);
+
+        // Создаем подстроку, которую будем искать
+        String str = "cemetery";
+
+        long count = lines.stream().filter(line -> line.toLowerCase().contains(str.toLowerCase())).count();
+        System.out.println("The number of lines containing the word " + "'" + str + "'" + " is " + count);
 
 
         // todo: 6.	Параллельная обработка:
